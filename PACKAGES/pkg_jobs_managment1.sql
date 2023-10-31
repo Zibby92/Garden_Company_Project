@@ -1,0 +1,9 @@
+CREATE OR REPLACE PACKAGE jobs_managment IS
+
+END;
+/
+CREATE OR REPLACE PACKAGE BODY jobs_managment IS
+
+PROCEDURE add_job( 
+
+END;

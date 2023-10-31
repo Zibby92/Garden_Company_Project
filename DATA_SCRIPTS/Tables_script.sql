@@ -10,7 +10,7 @@
 -- predefined type, no DDL - XMLTYPE
 
 CREATE TABLE daily_costs (
-    id_daily_costs            NUMBER NOT NULL,
+    id_daily_costs            NUMBER GENERATED ALWAYS AS IDENTITY NOT NULL,
     id_job                    NUMBER NOT NULL,
     material_cost             NUMBER,
     fuel_cost                 NUMBER,
@@ -22,7 +22,7 @@ CREATE TABLE daily_costs (
 ALTER TABLE daily_costs ADD CONSTRAINT daily_costs_pk PRIMARY KEY ( id_daily_costs );
 
 CREATE TABLE employees (
-    id_employee     NUMBER NOT NULL,
+    id_employee     NUMBER GENERATED ALWAYS AS IDENTITY NOT NULL,
     first_name      VARCHAR2(50),
     last_name       VARCHAR2(60),
     driving_license VARCHAR2(1),
@@ -33,7 +33,7 @@ CREATE TABLE employees (
 ALTER TABLE employees ADD CONSTRAINT employees_pk PRIMARY KEY ( id_employee );
 
 CREATE TABLE jobs (
-    id_job                   NUMBER NOT NULL,
+    id_job                   NUMBER GENERATED ALWAYS AS IDENTITY NOT NULL,
     principal_id             NUMBER NOT NULL,
     predicted_amount         NUMBER NOT NULL,
     predicted_beginning      DATE NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE jobs (
 ALTER TABLE jobs ADD CONSTRAINT jobs_pk PRIMARY KEY ( id_job );
 
 CREATE TABLE principals (
-    id_principals NUMBER NOT NULL,
+    id_principals NUMBER GENERATED ALWAYS AS IDENTITY  NOT NULL,
     first_name    VARCHAR2(50) NOT NULL,
     last_name     VARCHAR2(60) NOT NULL,
     city          VARCHAR2(100),
@@ -60,7 +60,7 @@ CREATE TABLE principals (
 ALTER TABLE principals ADD CONSTRAINT principals_pk PRIMARY KEY ( id_principals );
 
 CREATE TABLE worked_hours (
-    id_worked_hours NUMBER NOT NULL,
+    id_worked_hours NUMBER GENERATED ALWAYS AS IDENTITY NOT NULL,
     worked_day      DATE NOT NULL,
     worked_hours    NUMBER,
     job_id          NUMBER NOT NULL,
@@ -85,15 +85,8 @@ ALTER TABLE worked_hours
     ADD CONSTRAINT worked_hours_jobs_fk FOREIGN KEY ( job_id )
         REFERENCES jobs ( id_job );
 
-CREATE SEQUENCE employees_id_employee_seq START WITH 1 NOCACHE ORDER;
 
-CREATE OR REPLACE TRIGGER employees_id_employee_trg BEFORE
-    INSERT ON employees
-    FOR EACH ROW
-    WHEN ( new.id_employee IS NULL )
-BEGIN
-    :new.id_employee := employees_id_employee_seq.nextval;
-END;
+
 /
 
 
