@@ -18,7 +18,7 @@ PROCEDURE find_similar_names_and_last_names_with_table(first_name VARCHAR2, last
         EXECUTE IMMEDIATE  'SELECT first_name, last_name FROM '
         || table_name ||v_condition BULK COLLECT INTO v_array_names;
         IF SQL%ROWCOUNT = 0 THEN RAISE NO_DATA_FOUND; END IF;
-        DBMS_OUTPUT.PUT_LINE('No found person with these data, maybe you were looking for one of those? ');
+        DBMS_OUTPUT.PUT_LINE('No found person with these data, maybe were you looking for one of those? ');
         DBMS_OUTPUT.PUT_LINE('Persons with similar data: ');
         FOR i IN v_array_names.FIRST..v_array_names.LAST 
             LOOP

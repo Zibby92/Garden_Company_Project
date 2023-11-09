@@ -17,7 +17,7 @@ PROCEDURE add_principal (in_first_name principals.first_name%TYPE
                         ,in_street principals.street%TYPE
                         ,in_home_number principals.home_number%TYPE
                         ,in_phone_number  principals.phone_number%TYPE )
-IS
+    IS
     BEGIN 
         INSERT INTO principals (first_name, last_name, city, street, home_number, phone_number)
         VALUES  (in_first_name, in_last_name, in_city, in_street, in_home_number,  in_phone_number) ;

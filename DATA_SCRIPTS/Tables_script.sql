@@ -57,6 +57,11 @@ CREATE TABLE principals (
     phone_number  NUMBER NOT NULL
 );
 
+CREATE TABLE additional_works (id_additional_work NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY
+                                , job_id NUMBER
+                                , work_describe VARCHAR2(1000)
+                                , price NUMBER);
+
 ALTER TABLE principals ADD CONSTRAINT principals_pk PRIMARY KEY ( id_principals );
 
 CREATE TABLE worked_hours (
