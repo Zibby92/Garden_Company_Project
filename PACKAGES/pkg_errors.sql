@@ -11,4 +11,10 @@ PRAGMA EXCEPTION_INIT (err_no_rows_deleted, -20001);
 err_wrong_principals_data EXCEPTION;
 PRAGMA EXCEPTION_INIT (err_wrong_principals_data, -20100);
 mss_err_wrong_principals_data VARCHAR2(100) := 'There''s no principal whose suit to your data'; 
+
+--additional jobs exceptions
+err_wrong_id EXCEPTION;
+PRAGMA EXCEPTION_INIT(err_wrong_id,-02291);
+mss_err_wrong_id VARCHAR2(200) := 'Id which You''ve introduced is wrong, correct it or insert additional job by name and
+                                and last name of principal';
 END;
