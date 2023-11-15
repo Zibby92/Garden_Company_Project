@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE employees_managment IS 
 PROCEDURE add_employee(  in_first_name employees.first_name%TYPE
                         ,in_last_name employees.last_name%TYPE
-                        ,in_driving_licence employees.driving_licence%TYPE
+                        ,in_driving_licence employees.driving_license%TYPE
                         ,in_hire_dare employees.hire_date%TYPE
                         ,in_hour_wage employees.hour_wage%TYPE );
                         
@@ -12,12 +12,12 @@ CREATE OR REPLACE PACKAGE BODY employees_managment IS
 
 PROCEDURE add_employee(  in_first_name employees.first_name%TYPE
                         ,in_last_name employees.last_name%TYPE
-                        ,in_driving_licence employees.driving_licence%TYPE
+                        ,in_driving_licence employees.driving_license%TYPE
                         ,in_hire_dare employees.hire_date%TYPE
                         ,in_hour_wage employees.hour_wage%TYPE )
     IS
     BEGIN 
-    INSERT INTO employees (first_name, last_name, driving_licence, hire_date, hour_wage) VALUES
+    INSERT INTO employees (first_name, last_name, driving_license, hire_date, hour_wage) VALUES
                         (in_first_name, in_last_name, UPPER(in_driving_licence), in_hire_dare,in_hour_wage);
     EXCEPTION 
         WHEN pkg_errors.err_wrong_driving_licence THEN DBMS_OUTPUT.PUT_LINE('Wrong driving licence information, only values "Y" and 
