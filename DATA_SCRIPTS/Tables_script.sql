@@ -1,5 +1,5 @@
 CREATE TABLE employees (
-    id_employee     NUMBER GENERATED ALWAYS AS IDENTITY CONSTRAINT employee_pk PRIMARY KEY ,
+    id_employee     NUMBER CONSTRAINT employee_pk PRIMARY KEY ,
     first_name      VARCHAR2(30) NOT NULL,
     last_name       VARCHAR2(50) NOT NULL,
     driving_licence VARCHAR2(1) CHECK (driving_licence IN ('Y','y','N','n')) ,
@@ -8,25 +8,25 @@ CREATE TABLE employees (
 );
 
 CREATE TABLE principals (
-    id_principal NUMBER GENERATED ALWAYS AS IDENTITY  CONSTRAINT principals_pk PRIMARY KEY ,
+    id_principal  NUMBER CONSTRAINT principals_pk PRIMARY KEY ,
     first_name    VARCHAR2(30) NOT NULL,
     last_name     VARCHAR2(50) NOT NULL,
     city          VARCHAR2(100),
     street        VARCHAR2(100),
-    home_number   NUMBER,
+    home_number   VARCHAR2(10),
     phone_number  NUMBER
 );
 
 CREATE TABLE jobs 
-   (id_job NUMBER GENERATED ALWAYS AS IDENTITY CONSTRAINT id_jobs_pk PRIMARY KEY , 
-	id_principal NUMBER CONSTRAINT jobs_id_principal_fk REFERENCES principals(id_principal) ON DELETE SET NULL, 
+   (id_job NUMBER CONSTRAINT id_jobs_pk PRIMARY KEY , 
+	id_principal NUMBER CONSTRAINT jobs_id_principal_fk REFERENCES principals(id_principal), 
 	agreed_amount NUMBER, 
 	predicted_beginning DATE, 
 	predicted_ending DATE ,
 	job_begin DATE, 
 	job_end DATE,
     job_description VARCHAR2(1000),
-    status VARCHAR2(30) DEFAULT 'Nie rozpoczï¿½ta'
+    status VARCHAR2(30) DEFAULT 'Nie rozpoczêta'
     );
     /
 CREATE TABLE additional_works 
@@ -67,6 +67,18 @@ CREATE TABLE invoices
      status VARCHAR2(30) DEFAULT 'Oczekiwanie na zapï¿½atï¿½'
      );
 /
+CREATE TABLE done_jobs 
+   (id_done_job NUMBER GENERATED ALWAYS AS IDENTITY CONSTRAINT id_jobs_pk PRIMARY KEY , 
+	id_principal NUMBER CONSTRAINT jobs_id_principal_fk REFERENCES principals(id_principal) ON DELETE SET NULL, 
+	agreed_amount NUMBER, 
+	predicted_beginning DATE, 
+	predicted_ending DATE ,
+	job_begin DATE, 
+	job_end DATE,
+    job_description VARCHAR2(1000),
+    status VARCHAR2(30) DEFAULT 'Nie rozpoczêta'
+    );
+    /
 
 DROP TABLE EMPLOYEES;
 DROP TABLE ADDITIONAL_WORKS;
