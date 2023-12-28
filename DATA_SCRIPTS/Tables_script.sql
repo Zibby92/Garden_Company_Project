@@ -26,7 +26,7 @@ CREATE TABLE jobs
 	job_begin DATE, 
 	job_end DATE,
     job_description VARCHAR2(1000),
-    status VARCHAR2(30) DEFAULT 'Nie rozpoczêta'
+    status VARCHAR2(30) DEFAULT 'Nie rozpoczï¿½ta'
     );
     /
 CREATE TABLE additional_works 
@@ -34,7 +34,7 @@ CREATE TABLE additional_works
 	id_job NUMBER NOT NULL ENABLE CONSTRAINT additional_works_id_job_fk REFERENCES jobs(id_job), 
 	work_describe VARCHAR2(1000 BYTE), 
 	price NUMBER,
-    day_of_finish DATE
+    day_of_finish DATE DEFAULT SYSDATE
     );
 /
  CREATE TABLE daily_costs 
@@ -64,7 +64,7 @@ CREATE TABLE invoices
      additional_works_amount NUMBER,
      date_of_issue DATE DEFAULT SYSDATE,
      payment_maturity DATE DEFAULT SYSDATE + 60,
-     status VARCHAR2(30) DEFAULT 'Oczekiwanie na zap³atê'
+     status VARCHAR2(30) DEFAULT 'Oczekiwanie na zapï¿½atï¿½'
      );
 /
 
