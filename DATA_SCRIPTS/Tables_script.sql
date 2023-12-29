@@ -18,7 +18,7 @@ CREATE TABLE principals (
 );
 
 CREATE TABLE jobs 
-   (id_job NUMBER CONSTRAINT id_jobs_pk PRIMARY KEY , 
+   (id_job NUMBER CONSTRAINT jobs_pk PRIMARY KEY , 
 	id_principal NUMBER CONSTRAINT jobs_id_principal_fk REFERENCES principals(id_principal), 
 	agreed_amount NUMBER, 
 	predicted_beginning DATE, 
@@ -30,7 +30,7 @@ CREATE TABLE jobs
     );
     /
 CREATE TABLE additional_works 
-   (id_additional_work NUMBER GENERATED ALWAYS AS IDENTITY CONSTRAINT id_additional_works_pk PRIMARY KEY, 
+   (id_additional_work NUMBER GENERATED ALWAYS AS IDENTITY CONSTRAINT additional_works_pk PRIMARY KEY, 
 	id_job NUMBER NOT NULL ENABLE CONSTRAINT additional_works_id_job_fk REFERENCES jobs(id_job), 
 	work_describe VARCHAR2(1000 BYTE), 
 	price NUMBER,
@@ -39,8 +39,7 @@ CREATE TABLE additional_works
 /
  CREATE TABLE daily_costs 
    (id_daily_cost NUMBER GENERATED ALWAYS AS IDENTITY CONSTRAINT daily_costs_pk PRIMARY KEY, 
-	id_job NUMBER CONSTRAINT daily_costs_id_job_fk REFERENCES jobs(id_job) ON DELETE CASCADE, 
-	material_cost NUMBER, 
+	id_job NUMBER CONSTRAINT daily_costs_id_job_fk REFERENCES jobs(id_job) ON DELETE CASCADE,  
 	amount_of_kilometers NUMBER, 
 	unpredicted_costs NUMBER, 
 	unpredicted_costs_details VARCHAR2(1000 BYTE), 
@@ -49,27 +48,27 @@ CREATE TABLE additional_works
 /
  CREATE TABLE worked_hours 
    (id_worked_hours NUMBER GENERATED ALWAYS AS IDENTITY CONSTRAINT worked_hours_pk PRIMARY KEY, 
-	worked_day DATE DEFAULT SYSDATE NOT NULL, 
+	day_of_work DATE DEFAULT SYSDATE NOT NULL, 
 	hours_per_day NUMBER DEFAULT 8, 
-	job_id NUMBER CONSTRAINT worked_hours_id_job_fk REFERENCES jobs(id_job) ON DELETE CASCADE, 
-	id_employee NUMBER CONSTRAINT worked_hours_id_employee_fk REFERENCES jobs(id_job) ON DELETE CASCADE
+	id_job NUMBER CONSTRAINT worked_hours_id_job_fk REFERENCES jobs(id_job) ON DELETE CASCADE, 
+	id_employee NUMBER CONSTRAINT worked_hours_id_employee_fk REFERENCES employees(id_employee) ON DELETE CASCADE
     );
 /
 CREATE TABLE invoices
-    (id_ivoice NUMBER GENERATED ALWAYS AS IDENTITY CONSTRAINT id_invoice_pk PRIMARY KEY,
-     invoice_number VARCHAR (15),
+    (id_invoice NUMBER CONSTRAINT invoices_pk PRIMARY KEY,
+     invoice_number VARCHAR2 (15),
      id_job NUMBER CONSTRAINT invoices_id_job_fk REFERENCES jobs(id_job) ON DELETE CASCADE,
      id_principal NUMBER CONSTRAINT invoices_id_principal_fk REFERENCES principals(id_principal) ON DELETE CASCADE,
-     id_agreed_amount NUMBER,
+     agreed_amount NUMBER,
      additional_works_amount NUMBER,
      date_of_issue DATE DEFAULT SYSDATE,
      payment_maturity DATE DEFAULT SYSDATE + 60,
-     status VARCHAR2(30) DEFAULT 'Oczekiwanie na zapï¿½atï¿½'
+     status VARCHAR2(30) DEFAULT 'Oczekiwanie na zap³atê½'
      );
 /
 CREATE TABLE done_jobs 
-   (id_done_job NUMBER GENERATED ALWAYS AS IDENTITY CONSTRAINT id_jobs_pk PRIMARY KEY , 
-	id_principal NUMBER CONSTRAINT jobs_id_principal_fk REFERENCES principals(id_principal) ON DELETE SET NULL, 
+   (id_done_job NUMBER GENERATED ALWAYS AS IDENTITY CONSTRAINT done_jobs_pk PRIMARY KEY , 
+	id_principal NUMBER CONSTRAINT done_jobs_id_principal_fk REFERENCES principals(id_principal) ON DELETE SET NULL, 
 	agreed_amount NUMBER, 
 	predicted_beginning DATE, 
 	predicted_ending DATE ,
@@ -78,12 +77,35 @@ CREATE TABLE done_jobs
     job_description VARCHAR2(1000),
     status VARCHAR2(30) DEFAULT 'Nie rozpoczêta'
     );
-    /
-
-DROP TABLE EMPLOYEES;
-DROP TABLE ADDITIONAL_WORKS;
+/
+CREATE TABLE used_materials
+    (id_used_material NUMBER GENERATED ALWAYS AS IDENTITY CONSTRAINT used_materials_pk PRIMARY KEY,
+     id_job NUMBER CONSTRAINT materials_id_jobs_fk REFERENCES jobs(id_job),
+     id_material VARCHAR2(100),
+     material_price NUMBER, 
+     material_amount VARCHAR2(500)
+     );
+/
+CREATE TABLE materials
+    (id_material NUMBER CONSTRAINT materials_pk PRIMARY KEY,
+     material_name VARCHAR2(100),
+     material_measure VARCHAR2(10) CHECK (material_measure IN ('szt','SZT','M2','m2','T','t'))
+     );
+     
 DROP TABLE DAILY_COSTS;
 DROP TABLE WORKED_HOURS;
+DROP TABLE EMPLOYEES;
+DROP TABLE ADDITIONAL_WORKS;
 DROP TABLE INVOICES;
+DROP TABLE USED_MATERIALS;
 DROP tABLE JOBS;
+DROP TABLE DONE_JOBS;
 DROP TABLE PRINCIPALS;
+DROP TABLE MATERIALS;
+
+DROP SEQUENCE employee_id_seq;
+DROP SEQUENCE principals_id_seq;
+DROP SEQUENCE jobs_id_seq;
+DROP SEQUENCE invoice_id_seq;
+DROP SEQUENCE materials_id_seq;
+
