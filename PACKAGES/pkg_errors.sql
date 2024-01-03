@@ -17,4 +17,6 @@ err_wrong_id EXCEPTION;
 PRAGMA EXCEPTION_INIT(err_wrong_id,-02291);
 mss_err_wrong_id VARCHAR2(200) := 'Id which You''ve introduced is wrong, correct it or insert additional job by name and
                                 and last name of principal';
+-- invoices exceptions
+mss_err_wrong_job_id VARCHAR2(200) := 'You introduced wrong id_job, please correct it'
 END;
