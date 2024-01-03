@@ -45,19 +45,18 @@ create or replace PACKAGE BODY invoices_pkg IS
                     v_final_invoice_number := number_already_exists(v_final_invoice_number);
                     SELECT count(*) INTO v_check FROM invoices WHERE invoice_number = v_final_invoice_number;
             END LOOP;
-
         RETURN v_final_invoice_number;
 END generate_invoice_number;
 
 PROCEDURE generate_invoice (in_id_job jobs.id_job%TYPE) 
     IS
+    v_status VARCHAR2(30) := 'Oczekiwanie na zap³atê';
     v_agreed_amount jobs.agreed_amount%TYPE;
-    BEGIN
-    SELECT agreed_amount INTO v_agreed_amount FROM jobs WHERE id_job = in_id_job; 
+    BEGIN    
     INSERT INTO invoices (invoice_number, id_job, id_principal, agreed_amount, additional_works_amount, status)
-           VALUES (generate_invoice_number(in_id_job) , in_id_job, (SELECT id_principal FROM jobs WHERE id_job = in_id_job), ( SELECT agreed_amount FROM jobs WHERE id_job = in_id_job),
-                (SELECT SUM(price) FROM additional_works WHERE id_job = in_id_job), 'Oczekiwanie na zap³atê');
-
+        VALUES (generate_invoice_number(in_id_job) , in_id_job, (SELECT id_principal FROM jobs WHERE id_job = in_id_job)
+              ,( SELECT agreed_amount FROM jobs WHERE id_job = in_id_job)
+              ,(SELECT SUM(price) FROM additional_works WHERE id_job = in_id_job), v_status);
     EXCEPTION 
         WHEN NO_DATA_FOUND THEN DBMS_OUTPUT.PUT_LINE(pkg_errors.mss_err_wrong_job_id);
     END generate_invoice;
