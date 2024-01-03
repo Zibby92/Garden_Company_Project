@@ -1,3 +1,19 @@
+create or replace PACKAGE jobs_managment_pkg IS
+PROCEDURE p_add_job (in_principal_name principals.first_name%TYPE
+                     ,in_principal_last_name principals.last_name%TYPE
+                     ,in_agreed_amount jobs.agreed_amount%TYPE
+                     ,in_predicted_beginning jobs.predicted_beginning%TYPE
+                     ,in_predicted_ending jobs.predicted_ending%TYPE );
+
+PROCEDURE p_begin_job  (in_principal_name principals.first_name%TYPE
+                        ,in_principal_last_name principals.last_name%TYPE
+                        ,in_begin DATE);
+PROCEDURE p_end_job (in_principal_name principals.first_name%TYPE
+                     ,in_principal_last_name principals.last_name%TYPE
+                     ,in_end DATE) ;
+
+END jobs_managment_pkg;
+/
 create or replace PACKAGE BODY jobs_managment_pkg IS
 
 

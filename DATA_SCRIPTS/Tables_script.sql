@@ -1,14 +1,26 @@
+CREATE SEQUENCE employee_id_seq
+  START WITH 1
+  INCREMENT BY 1
+  MAXVALUE 10000
+  NOCYCLE;
+/
 CREATE TABLE employees (
-    id_employee     NUMBER CONSTRAINT employee_pk PRIMARY KEY ,
+    id_employee     NUMBER DEFAULT employee_id_seq.NEXTVAL CONSTRAINT employee_pk PRIMARY KEY ,
     first_name      VARCHAR2(30) NOT NULL,
     last_name       VARCHAR2(50) NOT NULL,
     driving_licence VARCHAR2(1) CHECK (driving_licence IN ('Y','y','N','n')) ,
     hire_date       DATE DEFAULT SYSDATE,
     hour_wage       NUMBER
 );
-
+/
+CREATE SEQUENCE principals_id_seq
+  START WITH 1
+  INCREMENT BY 1
+  MAXVALUE 10000
+  NOCYCLE;
+/
 CREATE TABLE principals (
-    id_principal  NUMBER CONSTRAINT principals_pk PRIMARY KEY ,
+    id_principal  NUMBER DEFAULT principals_id_seq.NEXTVAL CONSTRAINT principals_pk PRIMARY KEY ,
     first_name    VARCHAR2(30) NOT NULL,
     last_name     VARCHAR2(50) NOT NULL,
     city          VARCHAR2(100),
@@ -16,9 +28,15 @@ CREATE TABLE principals (
     home_number   VARCHAR2(10),
     phone_number  NUMBER
 );
-
+/
+CREATE SEQUENCE jobs_id_seq
+  START WITH 1
+  INCREMENT BY 1
+  MAXVALUE 100000
+  NOCYCLE;
+/
 CREATE TABLE jobs 
-   (id_job NUMBER CONSTRAINT jobs_pk PRIMARY KEY , 
+   (id_job NUMBER DEFAULT jobs_id_seq.NEXTVAL CONSTRAINT jobs_pk PRIMARY KEY , 
 	id_principal NUMBER CONSTRAINT jobs_id_principal_fk REFERENCES principals(id_principal), 
 	agreed_amount NUMBER, 
 	predicted_beginning DATE, 
@@ -54,8 +72,14 @@ CREATE TABLE additional_works
 	id_employee NUMBER CONSTRAINT worked_hours_id_employee_fk REFERENCES employees(id_employee) ON DELETE CASCADE
     );
 /
+CREATE SEQUENCE invoice_id_seq
+  START WITH 1
+  INCREMENT BY 1
+  MAXVALUE 10000
+  NOCYCLE;
+/
 CREATE TABLE invoices
-    (id_invoice NUMBER CONSTRAINT invoices_pk PRIMARY KEY,
+    (id_invoice NUMBER DEFAULT invoice_id_seq.NEXTVAL CONSTRAINT invoices_pk PRIMARY KEY,
      invoice_number VARCHAR2 (15),
      id_job NUMBER CONSTRAINT invoices_id_job_fk REFERENCES jobs(id_job) ON DELETE CASCADE,
      id_principal NUMBER CONSTRAINT invoices_id_principal_fk REFERENCES principals(id_principal) ON DELETE CASCADE,
@@ -78,8 +102,14 @@ CREATE TABLE done_jobs
     status VARCHAR2(30) DEFAULT 'Nie rozpoczêta'
     );
 /
+CREATE SEQUENCE materials_id_seq
+  START WITH 1
+  INCREMENT BY 1
+  MAXVALUE 10000
+  NOCYCLE;
+/
 CREATE TABLE used_materials
-    (id_used_material NUMBER GENERATED ALWAYS AS IDENTITY CONSTRAINT used_materials_pk PRIMARY KEY,
+    (id_used_material NUMBER DEFAULT materials_id_seq.NEXTVAL CONSTRAINT used_materials_pk PRIMARY KEY,
      id_job NUMBER CONSTRAINT materials_id_jobs_fk REFERENCES jobs(id_job),
      id_material VARCHAR2(100),
      material_price NUMBER, 

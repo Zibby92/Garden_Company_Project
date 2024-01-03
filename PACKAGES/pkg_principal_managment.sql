@@ -1,3 +1,15 @@
+create or replace PACKAGE principal_managment  IS
+PROCEDURE add_principal (in_first_name principals.first_name%TYPE
+                        ,in_last_name principals.last_name%TYPE
+                        ,in_city principals.city%TYPE
+                        ,in_street principals.street%TYPE
+                        ,in_home_number principals.home_number%TYPE
+                        ,in_phone_number  principals.phone_number%TYPE );
+PROCEDURE drop_principal(in_first_name principals.first_name%TYPE, in_last_name principals.last_name%TYPE);
+
+END principal_managment;
+/
+
 create or replace PACKAGE BODY jobs_managment_pkg IS
 
 

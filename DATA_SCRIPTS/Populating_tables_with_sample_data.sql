@@ -1,9 +1,3 @@
-CREATE SEQUENCE employee_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  MAXVALUE 10000
-  NOCYCLE;
-  
 INSERT INTO employees (id_employee, first_name, last_name, driving_licence, hire_date, hour_wage) VALUES (employee_id_seq.nextval,'Jakub', 'Kuœmiñski','N', DATE'23-10-01',25);
 INSERT INTO employees (id_employee, first_name, last_name, driving_licence, hire_date, hour_wage) VALUES (employee_id_seq.nextval,'Micha³', 'Kowalczyk','N', DATE'22-10-01',30);
 INSERT INTO employees (id_employee, first_name, last_name, driving_licence, hire_date, hour_wage) VALUES (employee_id_seq.nextval,'Zofia', 'Adak','N', DATE'21-10-01',30);
@@ -14,12 +8,6 @@ INSERT INTO employees (id_employee, first_name, last_name, driving_licence, hire
 INSERT INTO employees (id_employee, first_name, last_name, driving_licence, hire_date, hour_wage) VALUES (employee_id_seq.nextval,'Marek', 'Eleñski','N', DATE'20-12-01',31);
 INSERT INTO employees (id_employee, first_name, last_name, driving_licence, hire_date, hour_wage) VALUES (employee_id_seq.nextval,'Robert', 'Nadaremno','N', DATE'23-12-01',40);
 INSERT INTO employees (id_employee, first_name, last_name, driving_licence, hire_date, hour_wage) VALUES (employee_id_seq.nextval,'Szczepan', 'Bocian','Y', DATE'21-09-01',50);
-
-CREATE SEQUENCE principals_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  MAXVALUE 10000
-  NOCYCLE;
   
 INSERT INTO principals (id_principal, first_name, last_name, city, street, home_number, phone_number) VALUES (principals_id_seq.NEXTVAL, 'Konstanty', 'Tyszkiewisz', 'Warszawa', 'Woronicza', 123, 123123123);
 INSERT INTO principals (id_principal, first_name, last_name, city, street, home_number, phone_number) VALUES (principals_id_seq.NEXTVAL, 'Jaros³aw', 'Wachad³o', 'Pruszków', 'Sienkiewicza', 1743, 99913132);
@@ -29,24 +17,12 @@ INSERT INTO principals (id_principal, first_name, last_name, city, street, home_
 INSERT INTO principals (id_principal, first_name, last_name, city, street, home_number, phone_number) VALUES (principals_id_seq.NEXTVAL, 'Ilona', 'Asymilewisz', 'Warszawa', 'Krótka', '43B', 514310381);
 INSERT INTO principals (id_principal, first_name, last_name, city, street, home_number, phone_number) VALUES (principals_id_seq.NEXTVAL, 'Weronika', 'Toruñska', 'Siennica', 'D³uga', '12/12', 123444122);
 
-CREATE SEQUENCE jobs_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  MAXVALUE 100000
-  NOCYCLE;
-  
 INSERT INTO jobs (id_job, id_principal, agreed_amount, predicted_beginning, predicted_ending, job_description) VALUES (jobs_id_seq.NEXTVAL, 1, 25000, DATE'23-10-01',DATE'23-11-10','Ogród o powierzchni 300m2, nic skomplikowanego, ³atwy dojazd');
 INSERT INTO jobs (id_job, id_principal, agreed_amount, predicted_beginning, predicted_ending, job_description) VALUES (jobs_id_seq.NEXTVAL, 2, 15000, DATE'23-11-10',DATE'23-11-30','Trawnik wraz z licznymi klombami');
 INSERT INTO jobs (id_job, id_principal, agreed_amount, predicted_beginning, predicted_ending, job_description) VALUES (jobs_id_seq.NEXTVAL, 3, 5000, DATE'24-01-02',DATE'24-01-15','Niwelacja tereniu i nawo¿enie ziemi');
 INSERT INTO jobs (id_job, id_principal, agreed_amount, predicted_beginning, predicted_ending, job_description) VALUES (jobs_id_seq.NEXTVAL, 1, 27000, DATE'24-01-16',DATE'24-02-02','Droga z kostki prowadz¹ca do altany');
 INSERT INTO jobs (id_job, id_principal, agreed_amount, predicted_beginning, predicted_ending, job_description) VALUES (jobs_id_seq.NEXTVAL, 4, 30000, DATE'23-02-03',DATE'23-02-27','Wiosenna pielêgnacja ogromnego ogrodu');
 
-CREATE SEQUENCE invoice_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  MAXVALUE 10000
-  NOCYCLE;
-  
 INSERT INTO invoices (id_invoice, invoice_number, id_job, id_principal, agreed_amount, additional_works_amount, date_of_issue, payment_maturity)
         VALUES ( invoice_id_seq.NEXTVAL, '1/30/01/2020', 1, 1, 2300, 300, DATE'20-01-30',DATE'20-01-30'+ 60);
 INSERT INTO invoices (id_invoice, invoice_number, id_job, id_principal, agreed_amount, additional_works_amount, date_of_issue, payment_maturity, status)
@@ -171,12 +147,6 @@ INSERT INTO worked_hours (day_of_work, hours_per_day, id_job, id_employee) VALUE
 INSERT INTO worked_hours (day_of_work, hours_per_day, id_job, id_employee) VALUES (DATE'20-02-02', 8, 2, 7);
 INSERT INTO worked_hours (day_of_work, hours_per_day, id_job, id_employee) VALUES (DATE'20-02-02', 8, 2, 8);
 INSERT INTO worked_hours (day_of_work, hours_per_day, id_job, id_employee) VALUES (DATE'20-02-02', 8, 2, 9);
-
-CREATE SEQUENCE materials_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  MAXVALUE 10000
-  NOCYCLE;
 
 INSERT INTO materials(id_material, material_name, material_measure) VALUES (materials_id_seq.NEXTVAL, 'sadzonka œwierk - 60 cm', 'szt');
 INSERT INTO materials(id_material, material_name, material_measure) VALUES (materials_id_seq.NEXTVAL, 'sadzonka œwierk - 100 cm', 'szt');
