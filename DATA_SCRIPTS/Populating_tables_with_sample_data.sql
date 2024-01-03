@@ -17,11 +17,11 @@ INSERT INTO principals (id_principal, first_name, last_name, city, street, home_
 INSERT INTO principals (id_principal, first_name, last_name, city, street, home_number, phone_number) VALUES (principals_id_seq.NEXTVAL, 'Ilona', 'Asymilewisz', 'Warszawa', 'Krótka', '43B', 514310381);
 INSERT INTO principals (id_principal, first_name, last_name, city, street, home_number, phone_number) VALUES (principals_id_seq.NEXTVAL, 'Weronika', 'Toruñska', 'Siennica', 'D³uga', '12/12', 123444122);
 
-INSERT INTO jobs (id_job, id_principal, agreed_amount, predicted_beginning, predicted_ending, job_description) VALUES (jobs_id_seq.NEXTVAL, 1, 25000, DATE'23-10-01',DATE'23-11-10','Ogród o powierzchni 300m2, nic skomplikowanego, ³atwy dojazd');
-INSERT INTO jobs (id_job, id_principal, agreed_amount, predicted_beginning, predicted_ending, job_description) VALUES (jobs_id_seq.NEXTVAL, 2, 15000, DATE'23-11-10',DATE'23-11-30','Trawnik wraz z licznymi klombami');
-INSERT INTO jobs (id_job, id_principal, agreed_amount, predicted_beginning, predicted_ending, job_description) VALUES (jobs_id_seq.NEXTVAL, 3, 5000, DATE'24-01-02',DATE'24-01-15','Niwelacja tereniu i nawo¿enie ziemi');
-INSERT INTO jobs (id_job, id_principal, agreed_amount, predicted_beginning, predicted_ending, job_description) VALUES (jobs_id_seq.NEXTVAL, 1, 27000, DATE'24-01-16',DATE'24-02-02','Droga z kostki prowadz¹ca do altany');
-INSERT INTO jobs (id_job, id_principal, agreed_amount, predicted_beginning, predicted_ending, job_description) VALUES (jobs_id_seq.NEXTVAL, 4, 30000, DATE'23-02-03',DATE'23-02-27','Wiosenna pielêgnacja ogromnego ogrodu');
+INSERT INTO jobs (id_job, id_principal, street, agreed_amount, predicted_beginning, predicted_ending, job_description) VALUES (jobs_id_seq.NEXTVAL, 1, '£opuszañska', 25000, DATE'23-10-01',DATE'23-11-10','Ogród o powierzchni 300m2, nic skomplikowanego, ³atwy dojazd');
+INSERT INTO jobs (id_job, id_principal, street, agreed_amount, predicted_beginning, predicted_ending, job_description) VALUES (jobs_id_seq.NEXTVAL, 2, 'Jagieloñska', 15000, DATE'23-11-10',DATE'23-11-30','Trawnik wraz z licznymi klombami');
+INSERT INTO jobs (id_job, id_principal, street, agreed_amount, predicted_beginning, predicted_ending, job_description) VALUES (jobs_id_seq.NEXTVAL, 3, 'Jagieloñska',5000, DATE'24-01-02',DATE'24-01-15','Niwelacja tereniu i nawo¿enie ziemi');
+INSERT INTO jobs (id_job, id_principal, street, agreed_amount, predicted_beginning, predicted_ending, job_description) VALUES (jobs_id_seq.NEXTVAL, 1, 'Traugutta', 27000, DATE'24-01-16',DATE'24-02-02','Droga z kostki prowadz¹ca do altany');
+INSERT INTO jobs (id_job, id_principal, street, agreed_amount, predicted_beginning, predicted_ending, job_description) VALUES (jobs_id_seq.NEXTVAL, 4, 'Misiewicza', 30000, DATE'23-02-03',DATE'23-02-27','Wiosenna pielêgnacja ogromnego ogrodu');
 
 INSERT INTO invoices (id_invoice, invoice_number, id_job, id_principal, agreed_amount, additional_works_amount, date_of_issue, payment_maturity)
         VALUES ( invoice_id_seq.NEXTVAL, '1/30/01/2020', 1, 1, 2300, 300, DATE'20-01-30',DATE'20-01-30'+ 60);

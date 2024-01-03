@@ -38,6 +38,7 @@ CREATE SEQUENCE jobs_id_seq
 CREATE TABLE jobs 
    (id_job NUMBER DEFAULT jobs_id_seq.NEXTVAL CONSTRAINT jobs_pk PRIMARY KEY , 
 	id_principal NUMBER CONSTRAINT jobs_id_principal_fk REFERENCES principals(id_principal), 
+    street VARCHAR2(50),
 	agreed_amount NUMBER, 
 	predicted_beginning DATE, 
 	predicted_ending DATE ,
@@ -91,7 +92,7 @@ CREATE TABLE invoices
      );
 /
 CREATE TABLE done_jobs 
-   (id_done_job NUMBER GENERATED ALWAYS AS IDENTITY CONSTRAINT done_jobs_pk PRIMARY KEY , 
+   (id_done_job NUMBER  CONSTRAINT done_jobs_pk PRIMARY KEY , 
 	id_principal NUMBER CONSTRAINT done_jobs_id_principal_fk REFERENCES principals(id_principal) ON DELETE SET NULL, 
 	agreed_amount NUMBER, 
 	predicted_beginning DATE, 
@@ -99,7 +100,7 @@ CREATE TABLE done_jobs
 	job_begin DATE, 
 	job_end DATE,
     job_description VARCHAR2(1000),
-    status VARCHAR2(30) DEFAULT 'Nie rozpoczêta'
+    status VARCHAR2(30)
     );
 /
 CREATE SEQUENCE materials_id_seq
