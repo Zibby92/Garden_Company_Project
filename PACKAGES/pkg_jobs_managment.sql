@@ -1,9 +1,10 @@
 create or replace PACKAGE jobs_managment_pkg IS
-PROCEDURE p_add_job (in_principal_name principals.first_name%TYPE
-                     ,in_principal_last_name principals.last_name%TYPE
-                     ,in_agreed_amount jobs.agreed_amount%TYPE
-                     ,in_predicted_beginning jobs.predicted_beginning%TYPE
-                     ,in_predicted_ending jobs.predicted_ending%TYPE );
+PROCEDURE p_add_job   (in_principal_name principals.first_name%TYPE
+                    ,in_principal_last_name principals.last_name%TYPE
+                    ,in_agreed_amount jobs.agreed_amount%TYPE
+                    ,in_predicted_beginning jobs.predicted_beginning%TYPE
+                    ,in_predicted_ending jobs.predicted_ending%TYPE
+                    ,in_job_description jobs.job_description%TYPE);
 
 PROCEDURE p_begin_job  (in_principal_name principals.first_name%TYPE
                         ,in_principal_last_name principals.last_name%TYPE
@@ -17,11 +18,12 @@ END jobs_managment_pkg;
 create or replace PACKAGE BODY jobs_managment_pkg IS
 
 
-PROCEDURE p_add_job   (in_principal_name principals.first_name%TYPE,
-                    in_principal_last_name principals.last_name%TYPE,
-                    in_agreed_amount jobs.agreed_amount%TYPE,
-                    in_predicted_beginning jobs.predicted_beginning%TYPE,
-                    in_predicted_ending jobs.predicted_ending%TYPE )
+PROCEDURE p_add_job   (in_principal_name principals.first_name%TYPE
+                    ,in_principal_last_name principals.last_name%TYPE
+                    ,in_agreed_amount jobs.agreed_amount%TYPE
+                    ,in_predicted_beginning jobs.predicted_beginning%TYPE
+                    ,in_predicted_ending jobs.predicted_ending%TYPE
+                    ,in_job_description jobs.job_description%TYPE)
 IS 
 v_principal_id NUMBER;
 BEGIN  
@@ -31,9 +33,9 @@ BEGIN
     in_principal_name IS NULL 
     THEN RAISE pkg_errors.err_wrong_principals_data; END IF;
     
-    INSERT INTO jobs (id_principal, agreed_amount, predicted_beginning, predicted_ending)
+    INSERT INTO jobs (id_principal, agreed_amount, predicted_beginning, predicted_ending, job_description)
             VALUES ((SELECT id_principal FROM principals WHERE first_name = in_principal_name AND last_name = in_principal_last_name),
-                    in_agreed_amount, in_predicted_beginning, in_predicted_ending);
+                    in_agreed_amount, in_predicted_beginning, in_predicted_ending, in_job_description);
 EXCEPTION 
     WHEN NO_DATA_FOUND OR pkg_errors.err_wrong_principals_data 
         THEN DBMS_OUTPUT.PUT_LINE (pkg_errors.mss_err_wrong_principals_data);
