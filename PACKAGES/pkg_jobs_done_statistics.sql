@@ -1,4 +1,3 @@
-DROP PACKAGE  pkg_jobs_done_statistic;
 CREATE OR REPLACE PACKAGE pkg_jobs_done_statistics IS
 
 PROCEDURE add_data_to_statistic(in_id_job jobs.id_job%TYPE);

@@ -1,6 +1,5 @@
 create or replace PACKAGE invoices_pkg IS
 
-    FUNCTION generate_invoice_number(in_id_job NUMBER) RETURN VARCHAR2;
     PROCEDURE generate_invoice (in_id_job jobs.id_job%TYPE) ;
 
 END invoices_pkg;
@@ -45,6 +44,7 @@ create or replace PACKAGE BODY invoices_pkg IS
                     v_final_invoice_number := number_already_exists(v_final_invoice_number);
                     SELECT count(*) INTO v_check FROM invoices WHERE invoice_number = v_final_invoice_number;
             END LOOP;
+            
         RETURN v_final_invoice_number;
 END generate_invoice_number;
 
@@ -52,9 +52,11 @@ PROCEDURE generate_invoice (in_id_job jobs.id_job%TYPE)
     IS
     v_status VARCHAR2(30) := 'Oczekiwanie na zap³atê';
     v_agreed_amount jobs.agreed_amount%TYPE;
+    v_invoice_number VARCHAR2(30);
     BEGIN    
+    v_invoice_number := generate_invoice_number(in_id_job);
     INSERT INTO invoices (invoice_number, id_job, id_principal, agreed_amount, additional_works_amount, status)
-        VALUES (generate_invoice_number(in_id_job) , in_id_job, (SELECT id_principal FROM jobs WHERE id_job = in_id_job)
+        VALUES (v_invoice_number , in_id_job, (SELECT id_principal FROM jobs WHERE id_job = in_id_job)
               ,( SELECT agreed_amount FROM jobs WHERE id_job = in_id_job)
               ,(SELECT SUM(price) FROM additional_works WHERE id_job = in_id_job), v_status);
     EXCEPTION 

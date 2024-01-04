@@ -122,6 +122,27 @@ CREATE TABLE materials
      material_name VARCHAR2(100),
      material_measure VARCHAR2(10) CHECK (material_measure IN ('szt','SZT','M2','m2','T','t'))
      );
+/
+CREATE TABLE jobs_done_statistics
+    (id_job_done_statistic NUMBER GENERATED ALWAYS AS IDENTITY CONSTRAINT jobs_done_statistics PRIMARY KEY,
+     principal_first_name VARCHAR2 (30),
+     principal_last_name VARCHAR2 (40),
+     street VARCHAR2 (30),
+     worked_hours NUMBER,
+     cost_of_worked_hours NUMBER,
+     material_cost NUMBER,
+     number_of_additional_works NUMBER,
+     cost_of_additional_works NUMBER,
+     driven_kilometers NUMBER,
+     agreed_amount NUMBER,
+     amount_of_unpredicted_costs NUMBER,
+     predicted_time_in_days NUMBER,
+     final_time_in_days NUMBER
+     );
+     
+     
+     
+     
      
 DROP TABLE DAILY_COSTS;
 DROP TABLE WORKED_HOURS;
@@ -133,6 +154,7 @@ DROP tABLE JOBS;
 DROP TABLE DONE_JOBS;
 DROP TABLE PRINCIPALS;
 DROP TABLE MATERIALS;
+DROP TABLE JOBS_DONE_STATISTICS;
 
 DROP SEQUENCE employee_id_seq;
 DROP SEQUENCE principals_id_seq;

@@ -14,11 +14,19 @@ PROCEDURE p_end_job (in_principal_name principals.first_name%TYPE
                      ,in_end DATE) ;
 PROCEDURE p_set_job_as_done(in_principal_first_name principals.first_name%TYPE
                           , in_principal_last_name principals.last_name%TYPE, in_street jobs.street%TYPE);
+--PROCEDURE delete_job(in_id_job jobs.id_job%TYPE);
+
                      
 
 END jobs_managment_pkg;
 /
 create or replace PACKAGE BODY jobs_managment_pkg IS
+/*
+PROCEDURE delete_job(in_id_job jobs.id_job%TYPE) 
+    IS
+BEGIN
+    DELETE FROM jobs WHERE id_job = in_id_job;
+END; */
 
 PROCEDURE p_set_job_as_done(in_principal_first_name principals.first_name%TYPE
                           , in_principal_last_name principals.last_name%TYPE, in_street jobs.street%TYPE)
