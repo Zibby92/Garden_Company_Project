@@ -81,7 +81,7 @@ CREATE SEQUENCE invoice_id_seq
 /
 CREATE TABLE invoices
     (id_invoice NUMBER DEFAULT invoice_id_seq.NEXTVAL CONSTRAINT invoices_pk PRIMARY KEY,
-     invoice_number VARCHAR2 (15),
+     invoice_number VARCHAR2 (30),
      id_job NUMBER CONSTRAINT invoices_id_job_fk REFERENCES jobs(id_job) ON DELETE CASCADE,
      id_principal NUMBER CONSTRAINT invoices_id_principal_fk REFERENCES principals(id_principal) ON DELETE CASCADE,
      agreed_amount NUMBER,

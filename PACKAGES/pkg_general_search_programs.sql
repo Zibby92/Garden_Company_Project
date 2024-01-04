@@ -5,10 +5,20 @@ PROCEDURE find_similar_names_and_last_names_by_table(first_name VARCHAR2, last_n
 FUNCTION f_find_job_id_by_name_and_last_name_of_principal   
                                                 (in_principal_name principals.first_name%TYPE,
                                                 in_principal_last_name principals.last_name%TYPE
-                                                ) RETURN NUMBER ; 
+                                                ) RETURN NUMBER ;
+FUNCTION check_if_id_job_is_right (in_id_job jobs.id_job%TYPE) RETURN jobs.id_job%TYPE;
 END general_search_programs;
 /
 CREATE OR REPLACE PACKAGE BODY general_search_programs IS 
+
+FUNCTION check_if_id_job_is_right (in_id_job jobs.id_job%TYPE) RETURN jobs.id_job%TYPE
+    IS
+    v_check NUMBER := 0; 
+BEGIN
+    SELECT COUNT(*) INTO v_check FROM jobs WHERE id_job = in_id_job;
+    IF (v_check <= 0) THEN RAISE NO_DATA_FOUND; END IF;
+    RETURN in_id_job;
+END check_if_id_job_is_right;
 
 PROCEDURE find_similar_names_and_last_names_by_table(first_name VARCHAR2, last_name VARCHAR2, table_name VARCHAR2) 
     IS  
@@ -45,7 +55,7 @@ FUNCTION f_find_job_id_by_name_and_last_name_of_principal
     SELECT id_job INTO v_job_id FROM jobs WHERE id_principal = v_id;
     RETURN v_job_id;
 EXCEPTION  
-    WHEN NO_DATA_FOUND THEN DBMS_OUTPUT.PUT_LINE('There''s no principal whose suit to your data' );
+    WHEN NO_DATA_FOUND THEN DBMS_OUTPUT.PUT_LINE('There''s no principal whose match to your data' );
                     general_search_programs.find_similar_names_and_last_names_by_table
                     (in_principal_name,in_principal_last_name,'principals');
                     RETURN NULL;
