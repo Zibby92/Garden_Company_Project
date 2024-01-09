@@ -139,6 +139,15 @@ CREATE TABLE jobs_done_statistics
      predicted_time_in_days NUMBER,
      final_time_in_days NUMBER
      );
+/
+CREATE TABLE errors_details
+    (id_error NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+     occur_time TIMESTAMP DEFAULT SYSTIMESTAMP,
+     error_number VARCHAR2(30),
+     error_message VARCHAR2 (300),
+     error_details VARCHAR2 (500),
+     user_name VARCHAR2(30)
+     );
      
      
      
@@ -155,6 +164,7 @@ DROP TABLE DONE_JOBS;
 DROP TABLE PRINCIPALS;
 DROP TABLE MATERIALS;
 DROP TABLE JOBS_DONE_STATISTICS;
+DROP TABLE ERRORS_DETAILS;
 
 DROP SEQUENCE employee_id_seq;
 DROP SEQUENCE principals_id_seq;
