@@ -1,13 +1,13 @@
-create or replace PACKAGE invoices_pkg IS
+CREATE OR REPLACE PACKAGE pkg_invoices IS
 
-    PROCEDURE generate_invoice (in_id_job jobs.id_job%TYPE) ;
+    PROCEDURE p_generate_invoice (in_id_job jobs.id_job%TYPE) ;
 
-END invoices_pkg;
+END pkg_invoices;
 
 /
-create or replace PACKAGE BODY invoices_pkg IS
+create or replace PACKAGE BODY pkg_invoices IS
 
-    FUNCTION number_already_exists(in_number VARCHAR2) RETURN VARCHAR2 
+    FUNCTION f_number_already_exists(in_number VARCHAR2) RETURN VARCHAR2 
         IS 
         v_first_invoice_part VARCHAR2(10);
         v_second_invoice_part VARCHAR2(15);
@@ -24,9 +24,9 @@ create or replace PACKAGE BODY invoices_pkg IS
           v_final_number := v_first_invoice_part||v_temporary_counter||v_second_invoice_part;
 
         RETURN v_final_number;
-        END number_already_exists;
+        END f_number_already_exists;
 
-    FUNCTION generate_invoice_number(in_id_job NUMBER) RETURN VARCHAR2
+    FUNCTION f_generate_invoice_number(in_id_job NUMBER) RETURN VARCHAR2
     IS 
          c_invoice CONSTANT  VARCHAR2(3)  := 'INV';
          v_date VARCHAR2(20) := TO_CHAR(SYSDATE,'YYYY/MM/DD');  
@@ -41,27 +41,27 @@ create or replace PACKAGE BODY invoices_pkg IS
 
             WHILE (v_check <> 0) 
                 LOOP
-                    v_final_invoice_number := number_already_exists(v_final_invoice_number);
+                    v_final_invoice_number := f_number_already_exists(v_final_invoice_number);
                     SELECT count(*) INTO v_check FROM invoices WHERE invoice_number = v_final_invoice_number;
             END LOOP;
             
         RETURN v_final_invoice_number;
-END generate_invoice_number;
+    END f_generate_invoice_number;
 
-PROCEDURE generate_invoice (in_id_job jobs.id_job%TYPE) 
+PROCEDURE p_generate_invoice (in_id_job jobs.id_job%TYPE) 
     IS
     v_status VARCHAR2(30) := 'Oczekiwanie na zap³atê';
     v_agreed_amount jobs.agreed_amount%TYPE;
     v_invoice_number VARCHAR2(30);
     BEGIN    
-    v_invoice_number := generate_invoice_number(in_id_job);
+    v_invoice_number := f_generate_invoice_number(in_id_job);
     INSERT INTO invoices (invoice_number, id_job, id_principal, agreed_amount, additional_works_amount, status)
         VALUES (v_invoice_number , in_id_job, (SELECT id_principal FROM jobs WHERE id_job = in_id_job)
               ,( SELECT agreed_amount FROM jobs WHERE id_job = in_id_job)
               ,(SELECT SUM(price) FROM additional_works WHERE id_job = in_id_job), v_status);
-    EXCEPTION 
-        WHEN NO_DATA_FOUND THEN DBMS_OUTPUT.PUT_LINE(pkg_errors.mss_err_wrong_job_id);
-    END generate_invoice;
+EXCEPTION 
+    WHEN NO_DATA_FOUND THEN pkg_errors_managment.p_add_error(SQLCODE,SQLERRM, DBMS_UTILITY.format_call_stack);
+    DBMS_OUTPUT.PUT_LINE('Error occured. Check details in table');;
+END p_generate_invoice;
 
-
-END invoices_pkg;
+END pkg_invoices;

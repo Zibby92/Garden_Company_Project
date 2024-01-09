@@ -1,6 +1,6 @@
 CREATE OR REPLACE PACKAGE pkg_jobs_done_statistics IS
 
-PROCEDURE add_data_to_statistic(in_id_job jobs.id_job%TYPE);
+    PROCEDURE add_data_to_statistic(in_id_job jobs.id_job%TYPE);
  
 END pkg_jobs_done_statistics;
 /
@@ -147,8 +147,9 @@ PROCEDURE add_data_to_statistic(in_id_job jobs.id_job%TYPE)
 BEGIN
     v_id_job := general_search_programs.check_if_id_job_is_right(in_id_job);
     add_data_to_statistic_table_after_check(v_id_job);
-    EXCEPTION 
-        WHEN NO_DATA_FOUND THEN DBMS_OUTPUT.PUT_LINE('Id_job that you inserted is wrong, please correct it.');
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN pkg_errors_managment.p_add_error(SQLCODE,SQLERRM, DBMS_UTILITY.format_call_stack);
+    DBMS_OUTPUT.PUT_LINE('Error occured. Check details in table');    
 END add_data_to_statistic;
 
 END pkg_jobs_done_statistics;

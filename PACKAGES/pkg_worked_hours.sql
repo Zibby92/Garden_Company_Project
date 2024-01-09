@@ -1,11 +1,11 @@
-create or replace PACKAGE worked_hours_pkg IS
+CREATE OR REPLACE PACKAGE pkg_worked_hours IS
 PROCEDURE all_at_one_job( in_day_of_work DATE
                          ,in_hours_per_day worked_hours.hours_per_day%TYPE
                          ,in_id_job jobs.id_job%TYPE);
 
-END worked_hours_pkg;
+END pkg_worked_hours;
 /
-create or replace PACKAGE BODY worked_hours_pkg IS
+create or replace PACKAGE BODY pkg_worked_hours IS
 
 TYPE ntt_all_employees IS TABLE OF employees.id_employee%TYPE;
 
@@ -35,4 +35,4 @@ PROCEDURE all_at_one_job( in_day_of_work DATE
 
 END all_at_one_job;
 
-END;
+END pkg_worked_hours;

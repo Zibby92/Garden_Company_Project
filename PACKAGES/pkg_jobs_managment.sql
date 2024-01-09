@@ -1,4 +1,4 @@
-create or replace PACKAGE jobs_managment_pkg IS
+CREATE OR REPLACE PACKAGE pkg_jobs_managment IS
 PROCEDURE p_add_job   (in_principal_name principals.first_name%TYPE
                     ,in_principal_last_name principals.last_name%TYPE
                     ,in_agreed_amount jobs.agreed_amount%TYPE
@@ -17,10 +17,12 @@ PROCEDURE p_set_job_as_done(in_principal_first_name principals.first_name%TYPE
 
                      
 
-END jobs_managment_pkg;
+END pkg_jobs_managment;
 /
-create or replace PACKAGE BODY jobs_managment_pkg IS
+create or replace PACKAGE BODY pkg_jobs_managment IS
 
+err_wrong_principals_data EXCEPTION;
+PRAGMA EXCEPTION_INIT (err_wrong_principals_data, -20100);
 
 PROCEDURE p_set_job_as_done(in_principal_first_name principals.first_name%TYPE
                           , in_principal_last_name principals.last_name%TYPE, in_street jobs.street%TYPE)
@@ -36,12 +38,12 @@ BEGIN
         AND p.last_name = in_principal_last_name 
         AND j.street = in_street);
        
-       IF (SQL%ROWCOUNT = 0 ) THEN general_search_programs.find_similar_names_and_last_names_by_table( in_principal_first_name,
+       IF (SQL%ROWCOUNT = 0 ) THEN pkg_general_search_programs.p_find_similar_names_and_last_names_by_table( in_principal_first_name,
                                                            in_principal_last_name,v_table_name);
         ELSE DBMS_OUTPUT.PUT_LINE('You succesfully updated status');
         END IF;
        
-END p_set_job_as_done;
+END p_set_job_as_done; 
 
 PROCEDURE p_add_job   (in_principal_name principals.first_name%TYPE
                     ,in_principal_last_name principals.last_name%TYPE
@@ -56,15 +58,15 @@ BEGIN
     
     IF in_principal_last_name IS NULL OR 
     in_principal_name IS NULL 
-    THEN RAISE pkg_errors.err_wrong_principals_data; END IF;
+    THEN RAISE_APPLICATION_ERROR(-20100,'There''s no principal whose suit to your data'); END IF;
     
     INSERT INTO jobs (id_principal, agreed_amount, predicted_beginning, predicted_ending, job_description)
             VALUES ((SELECT id_principal FROM principals WHERE first_name = in_principal_name AND last_name = in_principal_last_name),
                     in_agreed_amount, in_predicted_beginning, in_predicted_ending, in_job_description);
 EXCEPTION 
-    WHEN NO_DATA_FOUND OR pkg_errors.err_wrong_principals_data 
-        THEN DBMS_OUTPUT.PUT_LINE (pkg_errors.mss_err_wrong_principals_data);
-        general_search_programs.find_similar_names_and_last_names_by_table(in_principal_name, in_principal_last_name, 'principals');
+    WHEN err_wrong_principals_data THEN pkg_errors_managment.p_add_error(SQLCODE,SQLERRM, DBMS_UTILITY.format_call_stack);
+    DBMS_OUTPUT.PUT_LINE('Error occured. Check details in table');
+    pkg_general_search_programs.p_find_similar_names_and_last_names_by_table(in_principal_name, in_principal_last_name, 'principals');
 END p_add_job; 
 
 PROCEDURE p_begin_job  (in_principal_name principals.first_name%TYPE
@@ -73,12 +75,13 @@ PROCEDURE p_begin_job  (in_principal_name principals.first_name%TYPE
 IS 
 v_id_job principals.id_principal%TYPE; 
 BEGIN 
-    v_id_job := general_search_programs.f_find_job_id_by_name_and_last_name_of_principal
+    v_id_job := pkg_general_search_programs.f_find_job_id_by_name_and_last_name_of_principal
                 (in_principal_name,in_principal_last_name);
-    IF v_id_job IS NULL THEN RAISE pkg_errors.err_wrong_principals_data; END IF;
+    IF v_id_job IS NULL THEN RAISE_APPLICATION_ERROR(-20100,'There''s no principal whose suit to your data'); END IF;
     UPDATE jobs  SET job_begin = in_begin WHERE id_job = v_id_job;
 EXCEPTION 
-    WHEN pkg_errors.err_wrong_principals_data THEN DBMS_OUTPUT.PUT_LINE(pkg_errors.mss_err_wrong_principals_data);
+    WHEN pkg_errors.err_wrong_principals_data THEN pkg_errors_managment.p_add_error(SQLCODE,SQLERRM, DBMS_UTILITY.format_call_stack);
+    DBMS_OUTPUT.PUT_LINE('Error occured. Check details in table');
 END p_begin_job;
 
 PROCEDURE p_end_job (in_principal_name principals.first_name%TYPE
@@ -87,14 +90,15 @@ PROCEDURE p_end_job (in_principal_name principals.first_name%TYPE
 IS 
 v_id_job principals.id_principal%TYPE; 
 BEGIN
-     v_id_job := general_search_programs.f_find_job_id_by_name_and_last_name_of_principal
+     v_id_job := pkg_general_search_programs.f_find_job_id_by_name_and_last_name_of_principal
                 (in_principal_name,in_principal_last_name);
-    IF v_id_job IS NULL THEN RAISE pkg_errors.err_wrong_principals_data; END IF;
+    IF v_id_job IS NULL THEN RAISE_APPLICATION_ERROR(-20100,'There''s no principal whose suit to your data'); END IF;
     UPDATE jobs SET job_end = in_end WHERE id_job = v_id_job;
 EXCEPTION 
-    WHEN pkg_errors.err_wrong_principals_data THEN DBMS_OUTPUT.PUT_LINE(pkg_errors.mss_err_wrong_principals_data);
+    WHEN pkg_errors.err_wrong_principals_data THEN pkg_errors_managment.p_add_error(SQLCODE,SQLERRM, DBMS_UTILITY.format_call_stack);
+    DBMS_OUTPUT.PUT_LINE('Error occured. Check details in table');
 END p_end_job;
 
 
 
-END jobs_managment_pkg;
+END pkg_jobs_managment;

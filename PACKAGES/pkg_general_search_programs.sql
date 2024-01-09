@@ -1,26 +1,26 @@
-DROP PACKAGE GENEREAL_SEARCH_PROGRAMS;
-/
-CREATE OR REPLACE PACKAGE general_search_programs IS
-PROCEDURE find_similar_names_and_last_names_by_table(first_name VARCHAR2, last_name VARCHAR2, table_name VARCHAR2); 
-FUNCTION f_find_job_id_by_name_and_last_name_of_principal   
+CREATE OR REPLACE PACKAGE pkg_general_search_programs IS
+    PROCEDURE p_find_similar_names_and_last_names_by_table(first_name VARCHAR2, last_name VARCHAR2, table_name VARCHAR2); 
+    
+    FUNCTION f_find_job_id_by_name_and_last_name_of_principal   
                                                 (in_principal_name principals.first_name%TYPE,
                                                 in_principal_last_name principals.last_name%TYPE
                                                 ) RETURN NUMBER ;
-FUNCTION check_if_id_job_is_right (in_id_job jobs.id_job%TYPE) RETURN jobs.id_job%TYPE;
-END general_search_programs;
+                                                
+    FUNCTION f_check_if_id_job_is_right (in_id_job jobs.id_job%TYPE) RETURN jobs.id_job%TYPE;
+END pkg_general_search_programs;
 /
-CREATE OR REPLACE PACKAGE BODY general_search_programs IS 
+CREATE OR REPLACE PACKAGE BODY pkg_general_search_programs IS 
 
-FUNCTION check_if_id_job_is_right (in_id_job jobs.id_job%TYPE) RETURN jobs.id_job%TYPE
+FUNCTION f_check_if_id_job_is_right (in_id_job jobs.id_job%TYPE) RETURN jobs.id_job%TYPE
     IS
     v_check NUMBER := 0; 
 BEGIN
     SELECT COUNT(*) INTO v_check FROM jobs WHERE id_job = in_id_job;
     IF (v_check <= 0) THEN RAISE NO_DATA_FOUND; END IF;
     RETURN in_id_job;
-END check_if_id_job_is_right;
+END f_check_if_id_job_is_right;
 
-PROCEDURE find_similar_names_and_last_names_by_table(first_name VARCHAR2, last_name VARCHAR2, table_name VARCHAR2) 
+PROCEDURE p_find_similar_names_and_last_names_by_table(first_name VARCHAR2, last_name VARCHAR2, table_name VARCHAR2) 
     IS  
     TYPE first_and_last IS RECORD (first_name VARCHAR2(100), last_name VARCHAR2(100) ) ;
     TYPE array_names IS TABLE OF first_and_last;
@@ -38,9 +38,10 @@ PROCEDURE find_similar_names_and_last_names_by_table(first_name VARCHAR2, last_n
             LOOP
             DBMS_OUTPUT.PUT_LINE('Name: '|| v_array_names(i).first_name || ' Last Name: ' || v_array_names(i).last_name);
         END LOOP;
-EXCEPTION 
-    WHEN NO_DATA_FOUND THEN DBMS_OUTPUT.PUT_LINE('Nobody match to your data');
-END find_similar_names_and_last_names_by_table;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN pkg_errors_managment.p_add_error(SQLCODE,SQLERRM, DBMS_UTILITY.format_call_stack);
+    DBMS_OUTPUT.PUT_LINE('Error occured. Check details in table'); 
+END p_find_similar_names_and_last_names_by_table;
 
 FUNCTION f_find_job_id_by_name_and_last_name_of_principal   
                                                 (in_principal_name principals.first_name%TYPE,
@@ -55,12 +56,12 @@ FUNCTION f_find_job_id_by_name_and_last_name_of_principal
     SELECT id_job INTO v_job_id FROM jobs WHERE id_principal = v_id;
     RETURN v_job_id;
 EXCEPTION  
-    WHEN NO_DATA_FOUND THEN DBMS_OUTPUT.PUT_LINE('There''s no principal whose match to your data' );
-                    general_search_programs.find_similar_names_and_last_names_by_table
+    WHEN NO_DATA_FOUND THEN
+    pkg_errors_managment.p_add_error(SQLCODE,SQLERRM, DBMS_UTILITY.format_call_stack);
+    DBMS_OUTPUT.PUT_LINE('Error occured. Check details in table');
+    pkg_general_search_programs.p_find_similar_names_and_last_names_by_table
                     (in_principal_name,in_principal_last_name,'principals');
-                    RETURN NULL;
+    RETURN NULL;
 END f_find_job_id_by_name_and_last_name_of_principal; 
 
-
-
-END general_search_programs;
+END pkg_general_search_programs;

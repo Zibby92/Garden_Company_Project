@@ -1,4 +1,4 @@
-create or replace PACKAGE principal_managment  IS
+CREATE OR REPLACE PACKAGE pkg_principal_managment  IS
 PROCEDURE add_principal (in_first_name principals.first_name%TYPE
                         ,in_last_name principals.last_name%TYPE
                         ,in_city principals.city%TYPE
@@ -7,10 +7,12 @@ PROCEDURE add_principal (in_first_name principals.first_name%TYPE
                         ,in_phone_number  principals.phone_number%TYPE );
 PROCEDURE drop_principal(in_first_name principals.first_name%TYPE, in_last_name principals.last_name%TYPE);
 
-END principal_managment;
+END pkg_principal_managment;
 /
 
-create or replace PACKAGE BODY                "PRINCIPAL_MANAGMENT" IS 
+create or replace PACKAGE BODY pkg_principal_managment IS 
+    err_no_rows_deleted EXCEPTION;
+    PRAGMA EXCEPTION_INIT (err_no_rows_deleted, -20001);
 
 PROCEDURE add_principal (in_first_name principals.first_name%TYPE 
                         ,in_last_name principals.last_name%TYPE
@@ -28,9 +30,10 @@ PROCEDURE drop_principal(in_first_name principals.first_name%TYPE, in_last_name 
     IS 
 BEGIN 
         DELETE FROM principals WHERE UPPER(first_name) = UPPER(in_first_name) AND UPPER(last_name) = UPPER(in_last_name);
-        IF SQL%rowcount = 0 THEN RAISE pkg_errors.err_no_rows_deleted; END IF;
+        IF SQL%rowcount = 0 THEN RAISE_APPLICATION_ERROR(-20001,'No rows deleted' ); END IF;
 EXCEPTION
-        WHEN pkg_errors.err_no_rows_deleted THEN DBMS_OUTPUT.PUT_LINE('There''s no record which match to you''re data input');
+    WHEN err_no_rows_deleted THEN pkg_errors_managment.p_add_error(SQLCODE,SQLERRM, DBMS_UTILITY.format_call_stack);
+    DBMS_OUTPUT.PUT_LINE('Error occured. Check details in table');
 END drop_principal;
 
-END principal_managment;
+END pkg_principal_managment;
