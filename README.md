@@ -43,7 +43,7 @@
 <ul>
 <li>Next just click on icon with the small green arrow :</li>
 </ul>
-<p><img src="https://github.com/Zibby92/Garden_Company_Project/blob/main/INSTALL%20SCRIPT/2.jpg" alt="Where script starts" width="742" height="560" /></p>
+<p><img src="https://github.com/Zibby92/Garden_Company_Project/blob/main/INSTALL%20SCRIPT/2.jpg" alt="Where script starts" width="742" height="460" /></p>
 <div>And it's ready to use. All tables, data and programs will be working.</div>
 <div>Working functionalities:</div>
 <div>&nbsp;</div>
