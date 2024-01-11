@@ -91,18 +91,7 @@ CREATE TABLE invoices
      status VARCHAR2(30) DEFAULT 'Oczekiwanie na zap³atê½'
      );
 /
-CREATE TABLE done_jobs 
-   (id_done_job NUMBER  CONSTRAINT done_jobs_pk PRIMARY KEY , 
-	id_principal NUMBER CONSTRAINT done_jobs_id_principal_fk REFERENCES principals(id_principal) ON DELETE SET NULL, 
-	agreed_amount NUMBER, 
-	predicted_beginning DATE, 
-	predicted_ending DATE ,
-	job_begin DATE, 
-	job_end DATE,
-    job_description VARCHAR2(1000),
-    status VARCHAR2(30)
-    );
-/
+
 CREATE SEQUENCE materials_id_seq
   START WITH 1
   INCREMENT BY 1
@@ -160,7 +149,6 @@ DROP TABLE ADDITIONAL_WORKS;
 DROP TABLE INVOICES;
 DROP TABLE USED_MATERIALS;
 DROP tABLE JOBS;
-DROP TABLE DONE_JOBS;
 DROP TABLE PRINCIPALS;
 DROP TABLE MATERIALS;
 DROP TABLE JOBS_DONE_STATISTICS;

@@ -1,4 +1,4 @@
-CREATE OR REPLACE TRIGGER job_set_to_done
+create or replace TRIGGER job_set_to_done
 AFTER 
 UPDATE 
 OF status ON jobs
@@ -12,5 +12,7 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Created invoice to job with ID -  ' || v_id_job);
     pkg_jobs_done_statistics.p_add_data_to_statistic(v_id_job);
     DBMS_OUTPUT.PUT_LINE('Transfered data from jobs to table jobs_done_statistic'); 
+    pkg_done_jobs_managment.p_copy_data_to_jobs_done(v_id_job);
+    DBMS_OUTPUT.PUT_LINE('Data added to jobs_done table');
 COMMIT;
 END job_set_to_done;
