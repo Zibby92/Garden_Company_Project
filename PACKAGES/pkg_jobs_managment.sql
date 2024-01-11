@@ -80,7 +80,7 @@ BEGIN
     IF v_id_job IS NULL THEN RAISE_APPLICATION_ERROR(-20100,'There''s no principal whose suit to your data'); END IF;
     UPDATE jobs  SET job_begin = in_begin WHERE id_job = v_id_job;
 EXCEPTION 
-    WHEN pkg_errors.err_wrong_principals_data THEN pkg_errors_managment.p_add_error(SQLCODE,SQLERRM, DBMS_UTILITY.format_call_stack);
+    WHEN err_wrong_principals_data THEN pkg_errors_managment.p_add_error(SQLCODE,SQLERRM, DBMS_UTILITY.format_call_stack);
     DBMS_OUTPUT.PUT_LINE('Error occured. Check details in table');
 END p_begin_job;
 
@@ -95,7 +95,7 @@ BEGIN
     IF v_id_job IS NULL THEN RAISE_APPLICATION_ERROR(-20100,'There''s no principal whose suit to your data'); END IF;
     UPDATE jobs SET job_end = in_end WHERE id_job = v_id_job;
 EXCEPTION 
-    WHEN pkg_errors.err_wrong_principals_data THEN pkg_errors_managment.p_add_error(SQLCODE,SQLERRM, DBMS_UTILITY.format_call_stack);
+    WHEN err_wrong_principals_data THEN pkg_errors_managment.p_add_error(SQLCODE,SQLERRM, DBMS_UTILITY.format_call_stack);
     DBMS_OUTPUT.PUT_LINE('Error occured. Check details in table');
 END p_end_job;
 
