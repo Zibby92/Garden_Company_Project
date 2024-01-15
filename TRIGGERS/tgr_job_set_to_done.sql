@@ -13,4 +13,4 @@ BEGIN
     pkg_jobs_done_statistics.p_add_data_to_statistic(v_id_job);
     DBMS_OUTPUT.PUT_LINE('Transfered data from jobs to table jobs_done_statistic'); 
 COMMIT;
-END job_set_to_done;
+END job_set_to_done; 
