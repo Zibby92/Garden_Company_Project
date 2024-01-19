@@ -2,7 +2,7 @@ CREATE SEQUENCE employee_id_seq
   START WITH 1
   INCREMENT BY 1
   MAXVALUE 10000
-  NOCYCLE; 
+  NOCYCLE;  
 /
 CREATE TABLE employees (
     id_employee     NUMBER DEFAULT employee_id_seq.NEXTVAL CONSTRAINT employee_pk PRIMARY KEY ,
