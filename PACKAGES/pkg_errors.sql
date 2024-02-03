@@ -20,6 +20,6 @@ mss_err_wrong_id VARCHAR2(200) := 'Id which You''ve introduced is wrong, correct
 -- invoices exceptions
 mss_err_wrong_job_id VARCHAR2(200) := 'You introduced wrong id_job, please correct it';
 --jobs_done_statistics exeptions
-
+ 
 
 END;
